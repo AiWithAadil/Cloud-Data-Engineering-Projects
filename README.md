@@ -1,4 +1,5 @@
 # Cloud Data Engineering Projects
+![Reddit ETL Pipeline](aws2.PNG)
 
 Welcome to the **Cloud Data Engineering Projects** repository! This repository is a collection of projects that demonstrate cloud-based architectures and data engineering workflows. It showcases scalable and efficient solutions for processing, storing, and analyzing data using modern cloud platforms and tools.
 
