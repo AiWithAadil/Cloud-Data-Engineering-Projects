@@ -6,9 +6,9 @@ import boto3
 import praw
 
 # Reddit API credentials
-client_id = "10IFpWxWeMojmm-n3r7S1g"
-client_secret = "55VpdTvHRltrSg1InQOI7e4Px3mmJQ"
-user_agent = "aadil v1.0 by u/sm_aadil"
+client_id = ""
+client_secret = ""
+user_agent = ""
 
 # S3 bucket and file details
 S3_BUCKET = "reddit-bucket-ad"
