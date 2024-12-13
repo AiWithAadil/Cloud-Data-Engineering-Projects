@@ -1,0 +1,54 @@
+import sys
+from awsglue.context import GlueContext
+from awsglue.transforms import *
+from awsglue.utils import getResolvedOptions
+from pyspark.context import SparkContext
+from awsglue.dynamicframe import DynamicFrame
+
+# Parse arguments
+args = getResolvedOptions(sys.argv, ['JOB_NAME'])
+sc = SparkContext()
+glueContext = GlueContext(sc)
+spark = glueContext.spark_session
+
+# S3 source path
+s3_source_path = "s3://cars-bucket-ad"
+
+# Snowflake connection options
+sf_options = {
+    "sfURL": "*****************",
+    "sfDatabase": "*******",
+    "sfSchema": "*******",
+    "sfWarehouse": "******", # Replace with your Snowflake warehouse name
+    "sfUser": "*********",
+    "sfPassword": "***********",
+}
+
+# Target Snowflake table
+sf_table = "vehicle_data"
+
+# Load data from S3 as a DynamicFrame
+s3_source = glueContext.create_dynamic_frame.from_options(
+    connection_type="s3",
+    connection_options={"paths": [s3_source_path]},
+    format="csv",  # Change to "json", "parquet", etc., if needed
+    format_options={"withHeader": True}
+)
+
+# Optional: Transform data (example: rename columns, filter rows, etc.)
+# Convert to Spark DataFrame for transformations
+transformed_df = s3_source.toDF()
+
+# Perform any required transformations
+# Example: transformed_df = transformed_df.filter(transformed_df["column_name"] != "value")
+
+# Write to Snowflake
+transformed_df.write \
+    .format("net.snowflake.spark.snowflake") \
+    .options(**sf_options) \
+    .option("dbtable", sf_table) \
+    .mode("overwrite") \
+    .save()
+
+# Commit the job
+print("Job completed successfully!")
