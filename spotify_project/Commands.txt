@@ -1,0 +1,44 @@
+sudo rm -f /etc/yum.repos.d/docker-ce.repo
+sudo amazon-linux-extras enable docker
+sudo dnf install docker -y
+
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo systemctl enable --now docker
+sudo systemctl status docker
+
+docker --version
+
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+
+mkdir airflow && cd airflow
+vi docker-compose.yml
+
+mkdir -p ./logs ./dags ./plugins ./scripts
+
+sudo chown -R ec2-user:ec2-user ./airflow
+sudo chmod -R 777 ./airflow
+sudo chmod -R 777 ./logs ./dags ./plugins ./scripts
+
+sudo mkdir -p /opt/airflow/dags/
+sudo mkdir -p /opt/airflow/logs/
+sudo mkdir -p /opt/airflow/plugins/
+sudo mkdir -p /opt/airflow/scripts/
+
+sudo chmod -R 777 /opt/airflow/dags/
+sudo chmod -R 777 /opt/airflow/logs/
+sudo chmod -R 777 /opt/airflow/plugins/
+sudo chmod -R 777 /opt/airflow/scripts/
+
+sudo docker-compose up -d
+sudo docker-compose down
+
+vi script.py -> into dags folder
+sudo chmod 777 script.py 
+
+sudo docker exec -it airflow bash
+
+
+http://public ip:8080
